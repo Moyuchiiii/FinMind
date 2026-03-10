@@ -152,10 +152,13 @@ def request_deletion():
         return jsonify(error="not found"), 404
 
     if user.deletion_requested_at:
-        return jsonify(
-            error="deletion already requested",
-            deletion_scheduled_for=user.deletion_scheduled_for.isoformat(),
-        ), 409
+        return (
+            jsonify(
+                error="deletion already requested",
+                deletion_scheduled_for=user.deletion_scheduled_for.isoformat(),
+            ),
+            409,
+        )
 
     now = datetime.utcnow()
     scheduled = now + timedelta(days=DELETION_GRACE_DAYS)
